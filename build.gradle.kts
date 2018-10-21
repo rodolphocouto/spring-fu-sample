@@ -5,12 +5,17 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.0-rc-146"
     id("io.spring.dependency-management") version "1.0.6.RELEASE"
     id("org.springframework.boot") version "2.1.0.BUILD-SNAPSHOT"
+    id("org.jmailen.kotlinter") version "1.16.0"
 }
 
 dependencies {
     implementation("org.springframework.fu:spring-fu-kofu:0.0.3.BUILD-SNAPSHOT")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo")
+    implementation("org.valiktor:valiktor-spring-boot-starter:0.3.1")
+    implementation("org.valiktor:valiktor-javatime:0.3.1")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
