@@ -1,0 +1,192 @@
+{
+  "info": {
+    "_postman_id": "6d3ab06c-3973-4b84-a9cd-6c9a5f87d1d1",
+    "name": "spring-fu-sample",
+    "description": "Spring Fu Sample endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "hot-deals",
+      "item": [
+        {
+          "name": "/hot-deals",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost:8080/hot-deals",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "hot-deals"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/hot-deals",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "pt-BR",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"merchant\": {\n\t\t\"name\": \"Coco Bambu\",\n\t\t\"category\": \"RESTAURANT\",\n\t\t\"address\": \"Shopping Iguatemi\",\n\t\t\"rating\": 4.99\n\t},\n\t\"cashback\": 100,\n\t\"endTime\": \"2019-01-01T01:01:01\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/hot-deals",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "hot-deals"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/hot-deals/{id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost:8080/hot-deals/{{hotDealId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "hot-deals",
+                "{{hotDealId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/hot-deals/{id}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"hotDealId\": \"{{hotDealId}}\",\n\t\"merchant\": {\n\t\t\"name\": \"Coco Bambu\",\n\t\t\"category\": \"RESTAURANT\",\n\t\t\"address\": \"Shopping Iguatemi\",\n\t\t\"rating\": 4.99\n\t},\n\t\"cashback\": 99\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/hot-deals/{{hotDealId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "hot-deals",
+                "{{hotDealId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/hot-deals/{id}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {},
+            "url": {
+              "raw": "http://localhost:8080/hot-deals/{{hotDealId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "hot-deals",
+                "{{hotDealId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "2fd0b344-63fe-42ec-8514-dceb3a506622",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "090edc22-302d-4829-87d1-ba53b1bc8963",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "id": "be8b573e-5343-419b-b78b-0f201c236ec1",
+      "key": "hotDealId",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

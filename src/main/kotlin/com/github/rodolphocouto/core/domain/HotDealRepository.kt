@@ -16,6 +16,4 @@ interface HotDealRepository {
     fun create(hotDeal: HotDeal): Mono<HotDeal>
 
     fun update(hotDeal: HotDeal): Mono<HotDeal>
-
-    fun remove(hotDeal: HotDeal): Mono<HotDeal>
 }

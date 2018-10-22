@@ -7,6 +7,7 @@ import com.github.rodolphocouto.core.domain.HotDealRepository
 import com.github.rodolphocouto.core.domain.Merchant
 import org.springframework.stereotype.Service
 import reactor.core.publisher.toMono
+import java.time.LocalDateTime
 
 @Service
 class HotDealService(private val repository: HotDealRepository) {
@@ -51,5 +52,10 @@ class HotDealService(private val repository: HotDealRepository) {
             }
             .flatMap { repository.update(it) }
 
-    fun removeHotDeal(command: HotDealRemovalCommand) = repository.findById(command.hotDealId).map { repository.remove(it) }
+    fun removeHotDeal(command: HotDealRemovalCommand) =
+        repository.findById(command.hotDealId)
+            .map {
+                it.copy(endTime = LocalDateTime.now())
+            }
+            .flatMap { repository.update(it) }
 }
