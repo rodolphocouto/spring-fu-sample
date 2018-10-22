@@ -7,7 +7,6 @@ import com.github.rodolphocouto.core.application.HotDealService
 import com.github.rodolphocouto.core.application.HotDealUpdateCommand
 import com.github.rodolphocouto.core.domain.HotDealAlreadyExistsException
 import com.github.rodolphocouto.core.domain.HotDealId
-import com.github.rodolphocouto.core.domain.HotDealNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.server.ServerResponse
@@ -40,21 +39,20 @@ fun hotDealRouter(service: HotDealService) = router {
             GET("/") { req ->
                 ok().json()
                     .body<HotDealQuery>(service.findHotDealById(HotDealId.fromString(req.pathVariable("id"))))
-                    .onErrorResume(HotDealNotFoundException::class.java) { notFound().build() }
+                    .switchIfEmpty(notFound().build())
             }
 
             PATCH("/") { req ->
                 req.bodyToMono<HotDealUpdateCommand>()
                     .flatMap { service.updateHotDeal(it) }
                     .flatMap { noContent().build() }
-                    .onErrorResume(HotDealNotFoundException::class.java) { notFound().build() }
+                    .switchIfEmpty(notFound().build())
             }
 
             DELETE("/") { req ->
-                req.bodyToMono<HotDealRemovalCommand>()
-                    .flatMap { service.removeHotDeal(it) }
+                service.removeHotDeal(HotDealRemovalCommand(HotDealId.fromString(req.pathVariable("id"))))
                     .flatMap { noContent().build() }
-                    .onErrorResume(HotDealNotFoundException::class.java) { notFound().build() }
+                    .switchIfEmpty(notFound().build())
             }
         }
     }

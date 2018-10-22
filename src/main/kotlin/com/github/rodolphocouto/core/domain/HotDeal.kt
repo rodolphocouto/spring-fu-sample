@@ -14,7 +14,6 @@ import java.util.UUID
 
 typealias HotDealId = UUID
 
-class HotDealNotFoundException : Exception()
 class HotDealAlreadyExistsException : Exception()
 
 @Document

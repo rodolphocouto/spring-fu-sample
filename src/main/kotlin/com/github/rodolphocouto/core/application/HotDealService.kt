@@ -3,7 +3,6 @@ package com.github.rodolphocouto.core.application
 import com.github.rodolphocouto.core.domain.HotDeal
 import com.github.rodolphocouto.core.domain.HotDealAlreadyExistsException
 import com.github.rodolphocouto.core.domain.HotDealId
-import com.github.rodolphocouto.core.domain.HotDealNotFoundException
 import com.github.rodolphocouto.core.domain.HotDealRepository
 import com.github.rodolphocouto.core.domain.Merchant
 import org.springframework.stereotype.Service
@@ -16,8 +15,7 @@ class HotDealService(private val repository: HotDealRepository) {
 
     fun findHotDealStream() = repository.findStream().map { it.toQuery() }
 
-    fun findHotDealById(hotDealId: HotDealId) =
-        repository.findById(hotDealId).map { it.toQuery() }.switchIfEmpty(HotDealNotFoundException().toMono())
+    fun findHotDealById(hotDealId: HotDealId) = repository.findById(hotDealId).map { it.toQuery() }
 
     fun createHotDeal(command: HotDealCreationCommand) =
         repository.findByMerchantNameAndCategory(command.merchant.name, command.merchant.category)
@@ -52,10 +50,6 @@ class HotDealService(private val repository: HotDealRepository) {
                 )
             }
             .flatMap { repository.update(it) }
-            .switchIfEmpty(HotDealNotFoundException().toMono())
 
-    fun removeHotDeal(command: HotDealRemovalCommand) =
-        repository.findById(command.hotDealId)
-            .map { repository.remove(it) }
-            .switchIfEmpty(HotDealNotFoundException().toMono())
+    fun removeHotDeal(command: HotDealRemovalCommand) = repository.findById(command.hotDealId).map { repository.remove(it) }
 }

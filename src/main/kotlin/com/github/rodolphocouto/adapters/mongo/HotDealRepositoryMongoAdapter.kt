@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.ReactiveMongoOperations
 import org.springframework.data.mongodb.core.findAll
 import org.springframework.data.mongodb.core.findById
 import org.springframework.data.mongodb.core.findOne
-import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Criteria.where
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.data.mongodb.core.query.isEqualTo
 import org.springframework.stereotype.Repository
@@ -24,8 +24,8 @@ class HotDealRepositoryMongoAdapter(private val mongo: ReactiveMongoOperations) 
 
     override fun findByMerchantNameAndCategory(merchantName: String, merchantCategory: MerchantCategory) =
         mongo.findOne<HotDeal>(Query()
-            .addCriteria(Criteria.where("merchant.name").isEqualTo(merchantName))
-            .addCriteria(Criteria.where("merchant.category").isEqualTo(merchantCategory)))
+            .addCriteria(where("merchant.name").isEqualTo(merchantName))
+            .addCriteria(where("merchant.category").isEqualTo(merchantCategory)))
 
     override fun create(hotDeal: HotDeal) = mongo.save(hotDeal)
 
