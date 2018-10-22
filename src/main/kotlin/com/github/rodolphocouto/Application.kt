@@ -3,6 +3,7 @@ package com.github.rodolphocouto
 import com.github.rodolphocouto.adapters.mongo.HotDealRepositoryMongoAdapter
 import com.github.rodolphocouto.adapters.rest.hotDealRouter
 import com.github.rodolphocouto.core.application.HotDealService
+import org.springframework.boot.logging.LogLevel
 import org.springframework.fu.kofu.application
 import org.springframework.fu.kofu.mongo.embedded
 import org.springframework.fu.kofu.mongo.mongodb
@@ -11,6 +12,8 @@ import org.springframework.fu.kofu.web.server
 import org.valiktor.springframework.config.ValiktorConfiguration
 import org.valiktor.springframework.web.reactive.ValiktorJacksonReactiveExceptionHandler
 import org.valiktor.springframework.web.reactive.ValiktorReactiveExceptionHandler
+
+private const val PORT = 8080
 
 val app = application {
     beans {
@@ -21,12 +24,16 @@ val app = application {
         bean<ValiktorReactiveExceptionHandler>()
     }
 
+    logging {
+        level = LogLevel.INFO
+    }
+
     mongodb {
         embedded()
     }
 
     server {
-        port = 8080
+        port = PORT
 
         codecs {
             jackson()

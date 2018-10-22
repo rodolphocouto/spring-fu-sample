@@ -37,8 +37,8 @@ fun hotDealRouter(service: HotDealService) = router {
         "/{id}".nest {
 
             GET("/") { req ->
-                ok().json()
-                    .body<HotDealQuery>(service.findHotDealById(HotDealId.fromString(req.pathVariable("id"))))
+                service.findHotDealById(HotDealId.fromString(req.pathVariable("id")))
+                    .flatMap { ok().json().syncBody(it) }
                     .switchIfEmpty(notFound().build())
             }
 
