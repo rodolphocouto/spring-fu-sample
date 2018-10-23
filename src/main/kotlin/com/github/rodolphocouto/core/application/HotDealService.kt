@@ -20,7 +20,7 @@ class HotDealService(private val repository: HotDealRepository) {
 
     fun createHotDeal(command: HotDealCreationCommand) =
         repository.findByMerchantNameAndCategory(command.merchant.name, command.merchant.category)
-            .flatMap { HotDealAlreadyExistsException().toMono<HotDeal>() }
+            .flatMap { HotDealAlreadyExistsException(it.hotDealId).toMono<HotDeal>() }
             .switchIfEmpty(
                 repository.create(
                     HotDeal(

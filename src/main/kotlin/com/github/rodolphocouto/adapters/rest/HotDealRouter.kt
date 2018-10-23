@@ -31,7 +31,9 @@ fun hotDealRouter(service: HotDealService) = router {
             req.bodyToMono<HotDealCreationCommand>()
                 .flatMap { service.createHotDeal(it) }
                 .flatMap { created(req.uriBuilder().path("/{id}").build(it.hotDealId)).json().build() }
-                .onErrorResume(HotDealAlreadyExistsException::class.java) { conflict().build() }
+                .onErrorResume(HotDealAlreadyExistsException::class.java) {
+                    service.findHotDealById(it.hotDealId).flatMap { conflict().syncBody(it) }
+                }
         }
 
         "/{id}".nest {

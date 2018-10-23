@@ -14,9 +14,9 @@ import java.util.UUID
 
 typealias HotDealId = UUID
 
-class HotDealAlreadyExistsException : Exception()
+data class HotDealAlreadyExistsException(val hotDealId: HotDealId) : Exception()
 
-@Document
+@Document(collection = "hotDeals")
 data class HotDeal(
     @Id val hotDealId: HotDealId,
     val merchant: Merchant,
