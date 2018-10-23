@@ -13,7 +13,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo")
     implementation("org.valiktor:valiktor-spring-boot-starter:0.3.1")
     implementation("org.valiktor:valiktor-javatime:0.3.1")
 
@@ -21,6 +20,7 @@ dependencies {
     testImplementation("io.projectreactor:reactor-test")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testRuntimeOnly("de.flapdoodle.embed:de.flapdoodle.embed.mongo")
 }
 
 repositories {

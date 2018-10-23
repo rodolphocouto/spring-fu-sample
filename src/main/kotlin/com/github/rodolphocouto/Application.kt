@@ -5,7 +5,6 @@ import com.github.rodolphocouto.adapters.rest.hotDealRouter
 import com.github.rodolphocouto.core.application.HotDealService
 import org.springframework.boot.logging.LogLevel
 import org.springframework.fu.kofu.application
-import org.springframework.fu.kofu.mongo.embedded
 import org.springframework.fu.kofu.mongo.mongodb
 import org.springframework.fu.kofu.web.jackson
 import org.springframework.fu.kofu.web.server
@@ -29,7 +28,7 @@ val app = application {
     }
 
     mongodb {
-        embedded()
+        uri = "mongodb:27017//localhost/test"
     }
 
     server {
