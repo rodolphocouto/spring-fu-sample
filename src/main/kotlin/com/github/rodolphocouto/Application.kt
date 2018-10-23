@@ -3,9 +3,11 @@ package com.github.rodolphocouto
 import com.github.rodolphocouto.adapters.mongo.HotDealRepositoryMongoAdapter
 import com.github.rodolphocouto.adapters.rest.hotDealRouter
 import com.github.rodolphocouto.core.application.HotDealService
+import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.boot.logging.LogLevel
 import org.springframework.fu.kofu.application
 import org.springframework.fu.kofu.mongo.mongodb
+import org.springframework.fu.kofu.ref
 import org.springframework.fu.kofu.web.jackson
 import org.springframework.fu.kofu.web.server
 import org.valiktor.springframework.config.ValiktorConfiguration
@@ -23,12 +25,16 @@ val app = application {
         bean<ValiktorReactiveExceptionHandler>()
     }
 
+    listener<ApplicationReadyEvent> {
+        ref<HotDealRepositoryMongoAdapter>().init()
+    }
+
     logging {
         level = LogLevel.INFO
     }
 
     mongodb {
-        uri = "mongodb:27017//localhost/test"
+        uri = "mongodb://localhost/test"
     }
 
     server {
