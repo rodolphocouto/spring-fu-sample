@@ -29,7 +29,7 @@ data class HotDeal(
 
     init {
         validate(this) {
-            validate(HotDeal::cashback).isBetween(1, 100)
+            validate(HotDeal::cashback).isBetween(3, 100)
             validate(HotDeal::endTime).isGreaterThan(this@HotDeal.startTime)
             validate(HotDeal::merchant).validate {
                 validate(Merchant::name).isNotBlank().hasSize(max = 50)

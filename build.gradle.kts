@@ -6,6 +6,7 @@ plugins {
     id("io.spring.dependency-management") version "1.0.6.RELEASE"
     id("org.springframework.boot") version "2.1.0.RC1"
     id("org.jmailen.kotlinter") version "1.16.0"
+    id("com.adarshr.test-logger") version "1.3.1"
 }
 
 dependencies {
@@ -16,10 +17,9 @@ dependencies {
     implementation("org.valiktor:valiktor-spring-boot-starter:0.3.1")
     implementation("org.valiktor:valiktor-javatime:0.3.1")
 
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.1.8")
     testImplementation("org.springframework:spring-test")
-    testImplementation("io.projectreactor:reactor-test")
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testRuntimeOnly("de.flapdoodle.embed:de.flapdoodle.embed.mongo")
 }
 
@@ -40,6 +40,10 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+testlogger {
+    setTheme("mocha")
 }
 
 configurations.all {
