@@ -35,6 +35,7 @@ class HotDealService(private val repository: HotDealRepository) {
                     )
                 )
             )
+            .map { it.toQuery() }
 
     fun updateHotDeal(command: HotDealUpdateCommand) =
         repository.findById(command.hotDealId)
@@ -51,6 +52,7 @@ class HotDealService(private val repository: HotDealRepository) {
                 )
             }
             .flatMap { repository.update(it) }
+            .map { it.toQuery() }
 
     fun removeHotDeal(command: HotDealRemovalCommand) =
         repository.findById(command.hotDealId)
@@ -58,4 +60,5 @@ class HotDealService(private val repository: HotDealRepository) {
                 it.copy(endTime = LocalDateTime.now())
             }
             .flatMap { repository.update(it) }
+            .map { it.toQuery() }
 }

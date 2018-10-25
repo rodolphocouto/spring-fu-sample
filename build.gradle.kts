@@ -19,7 +19,9 @@ dependencies {
 
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("io.kotlintest:kotlintest-runner-junit5:3.1.8")
+    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC3")
     testImplementation("org.springframework:spring-test")
+    testImplementation("io.projectreactor:reactor-test")
     testRuntimeOnly("de.flapdoodle.embed:de.flapdoodle.embed.mongo")
 }
 
