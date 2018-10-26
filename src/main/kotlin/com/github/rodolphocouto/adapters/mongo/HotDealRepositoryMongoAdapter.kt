@@ -1,10 +1,13 @@
 package com.github.rodolphocouto.adapters.mongo
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.rodolphocouto.core.domain.HotDeal
 import com.github.rodolphocouto.core.domain.HotDealId
 import com.github.rodolphocouto.core.domain.HotDealRepository
 import com.github.rodolphocouto.core.domain.MerchantCategory
 import org.slf4j.LoggerFactory
+import org.springframework.core.io.ClassPathResource
 import org.springframework.data.mongodb.core.CollectionOptions
 import org.springframework.data.mongodb.core.ReactiveMongoOperations
 import org.springframework.data.mongodb.core.collectionExists
@@ -21,7 +24,10 @@ import java.time.LocalDateTime
 private val LOGGER = LoggerFactory.getLogger(HotDealRepositoryMongoAdapter::class.java)
 
 @Repository
-class HotDealRepositoryMongoAdapter(private val mongo: ReactiveMongoOperations) : HotDealRepository {
+class HotDealRepositoryMongoAdapter(
+    private val mongo: ReactiveMongoOperations,
+    private val objectMapper: ObjectMapper
+) : HotDealRepository {
 
     override fun findAll() = mongo.find<HotDeal>(Query().isActive())
 
@@ -41,9 +47,21 @@ class HotDealRepositoryMongoAdapter(private val mongo: ReactiveMongoOperations) 
 
     fun init() {
         mongo.collectionExists<HotDeal>()
-            .filter { !it }
-            .flatMap { mongo.createCollection<HotDeal>(CollectionOptions.empty().capped().size(1024L * 1024L)) }
-            .subscribe { LOGGER.info("Collection ${it.namespace.collectionName} created") }
+            .filter { exists -> !exists }
+            .flatMap {
+                mongo.createCollection<HotDeal>(CollectionOptions.empty().capped().size(1024L * 1024L))
+                    .doOnSuccess { LOGGER.info("Collection ${it.namespace.collectionName} created") }
+            }
+            .flatMapIterable {
+                ClassPathResource("hot-deals.json").inputStream.use { objectMapper.readValue<List<HotDeal>>(it) }
+            }
+            .flatMap { hotDeal ->
+                create(hotDeal).doOnSuccess { LOGGER.info("Hot deal $hotDeal created") }
+            }
+            .doOnError { ex ->
+                LOGGER.error("Error initializing repository", ex)
+            }
+            .subscribe()
     }
 }
 

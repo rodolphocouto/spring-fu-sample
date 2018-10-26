@@ -1,0 +1,50 @@
+[
+  {
+    "hotDealId": "5147eee0-79e0-44c5-bca3-c620336544a1",
+    "merchant": {
+      "name": "Coco Bambu",
+      "category": "RESTAURANT",
+      "address": "Shopping Iguatemi",
+      "rating": 4.99
+    },
+    "cashback": 70,
+    "startTime": "2018-01-01T01:01:01",
+    "endTime": "2019-01-01T01:01:01"
+  },
+  {
+    "hotDealId": "12f563d4-320d-4df6-86ba-930fd7e35e6f",
+    "merchant": {
+      "name": "Burger King",
+      "category": "RESTAURANT",
+      "address": "Ribeirão Shopping",
+      "rating": 4.55
+    },
+    "cashback": 60,
+    "startTime": "2018-10-01T15:00:00",
+    "endTime": "2018-12-10T23:59:59"
+  },
+  {
+    "hotDealId": "45297f3a-d187-4272-b607-c64ca8e0ee94",
+    "merchant": {
+      "name": "Posto Ipiranga",
+      "category": "FUEL",
+      "address": "Avenida Presidente Vargas, 999",
+      "rating": 3.60
+    },
+    "cashback": 40,
+    "startTime": "2018-10-20T12:00:00",
+    "endTime": "2018-11-20T23:59:59"
+  },
+  {
+    "hotDealId": "d7adea11-8b70-489f-af93-51f5dd6e1735",
+    "merchant": {
+      "name": "Drogaria Drogadão",
+      "category": "HEALTH",
+      "address": "Avenida Caramuru, 1000",
+      "rating": 4.20
+    },
+    "cashback": 20,
+    "startTime": "2018-10-25T00:00:00",
+    "endTime": "2018-12-01T23:59:59"
+  }
+]
