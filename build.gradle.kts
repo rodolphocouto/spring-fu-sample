@@ -1,28 +1,39 @@
-import org.gradle.kotlin.dsl.version
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.3.0"
-    id("io.spring.dependency-management") version "1.0.6.RELEASE"
-    id("org.springframework.boot") version "2.1.0.RELEASE"
-    id("org.jmailen.kotlinter") version "1.20.1"
-    id("com.adarshr.test-logger") version "1.5.0"
+    kotlin("jvm") version "1.3.50"
+    id("org.jmailen.kotlinter") version "2.1.1"
+    id("com.adarshr.test-logger") version "1.7.0"
+    id("org.springframework.boot") version "2.2.0.RELEASE"
+    id("jacoco")
 }
 
 dependencies {
-    implementation("org.springframework.fu:spring-fu-kofu:0.0.3.BUILD-SNAPSHOT")
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.valiktor:valiktor-spring-boot-starter:0.3.1")
-    implementation("org.valiktor:valiktor-javatime:0.3.1")
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:2.2.0.RELEASE"))
+    implementation(platform("org.springframework.boot.experimental:spring-boot-bom-r2dbc:0.1.0.M2"))
 
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.1.10")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0")
-    testImplementation("org.springframework:spring-test")
-    testImplementation("io.projectreactor:reactor-test")
-    testRuntimeOnly("de.flapdoodle.embed:de.flapdoodle.embed.mongo")
+    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("reflect"))
+    implementation("org.springframework.fu:spring-fu-kofu:0.2.2.BUILD-SNAPSHOT")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.data:spring-data-r2dbc")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.valiktor:valiktor-core:0.9.0")
+    implementation("org.valiktor:valiktor-javatime:0.9.0")
+    implementation("org.valiktor:valiktor-spring-boot-starter:0.9.0")
+
+    runtimeOnly("io.r2dbc:r2dbc-h2")
+
+    testImplementation("io.mockk:mockk:1.9.3")
+    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
+    testImplementation("org.valiktor:valiktor-test:0.9.0")
+}
+
+configurations.all {
+    exclude(group = "junit")
+    exclude(group = "org.mockito")
+    exclude(module = "hibernate-validator")
+    exclude(module = "jakarta.validation-api")
 }
 
 repositories {
@@ -31,22 +42,45 @@ repositories {
     maven("https://repo.spring.io/snapshot")
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=enable")
+tasks {
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "11"
+            freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=enable")
+        }
+    }
+
+    compileTestKotlin {
+        kotlinOptions {
+            jvmTarget = "11"
+            freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=enable")
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.isEnabled = true
+            html.isEnabled = true
+        }
+    }
+
+    jacocoTestCoverageVerification {
+        dependsOn(jacocoTestReport)
+    }
+
+    check {
+        dependsOn(jacocoTestCoverageVerification)
     }
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
+kotlinter {
+    disabledRules = arrayOf("import-ordering")
 }
 
 testlogger {
     setTheme("mocha")
-}
-
-configurations.all {
-    exclude(module = "javax.annotation-api")
-    exclude(module = "hibernate-validator")
 }
