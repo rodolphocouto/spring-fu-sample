@@ -27,6 +27,7 @@ dependencies {
     testImplementation("io.mockk:mockk:1.9.3")
     testImplementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
     testImplementation("org.valiktor:valiktor-test:0.9.0")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 configurations.all {
