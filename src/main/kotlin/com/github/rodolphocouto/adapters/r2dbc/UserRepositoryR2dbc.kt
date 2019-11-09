@@ -45,7 +45,7 @@ class UserRepositoryR2dbc(private val db: DatabaseClient) : UserRepository {
 
         val user1 = async { create(User(id = UserId.randomUUID(), name = "User 1", email = "user1@company.com")) }
         val user2 = async { create(User(id = UserId.randomUUID(), name = "User 2", email = "user2@company.com")) }
-        val user3 = async { create(User(id = UserId.randomUUID(), name = "User 2", email = "user3@company.com")) }
+        val user3 = async { create(User(id = UserId.randomUUID(), name = "User 3", email = "user3@company.com")) }
 
         user1.await()
         user2.await()
