@@ -10,6 +10,7 @@ import com.github.rodolphocouto.core.application.UserServiceTestFixture.userQuer
 import com.github.rodolphocouto.core.application.UserServiceTestFixture.userRemoved
 import com.github.rodolphocouto.core.application.UserServiceTestFixture.userUpdated
 import com.github.rodolphocouto.core.application.UserServiceTestFixture.users
+import com.github.rodolphocouto.core.domain.User
 import com.github.rodolphocouto.core.domain.UserAlreadyExistsException
 import com.github.rodolphocouto.core.domain.UserNotFoundException
 import com.github.rodolphocouto.core.domain.UserRepository
@@ -23,6 +24,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
+import io.mockk.slot
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.toList
 
@@ -93,13 +95,15 @@ class UserServiceTest : DescribeSpec() {
             }
 
             it("Should create user") {
+                val userSlot = slot<User>()
+
                 coEvery { repository.findByName(any()) } returns null
-                coEvery { repository.create(any()) } returns Unit
+                coEvery { repository.create(capture(userSlot)) } returns Unit
 
                 service.create(createUserCommand())
 
                 coVerify { repository.findByName(eq(createUserCommand().name)) }
-                coVerify { repository.create(match { it.name == userCreated().name && it.email == userCreated().email }) }
+                coVerify { repository.create(eq(userCreated().copy(id = userSlot.captured.id))) }
                 confirmVerified(repository)
             }
         }
